@@ -15,15 +15,26 @@ public class Student {
 
     private String name;
 
+    @Column(unique = true, nullable = false)
     private String email;
 
     @Temporal(TemporalType.DATE)
     private Date dateOfBirth;
 
+    @Transient
     private long age;
 
-    @OneToOne
+    @OneToOne   // TODO - It doesnt work for me
+    @JoinColumn (name = "address_id")
     private Address address;
+
+    @CollectionTable(name = "phone")
+    @ElementCollection()
+    List<String> phoneNumbers = new ArrayList<>();
+
+    @ManyToOne
+    Klass klass;
+
 
     public Student() {
     }
@@ -39,6 +50,11 @@ public class Student {
     public Student(String name, String email, Date dateOfBirth, Address address) {
         this(name, email, dateOfBirth);
         this.address = address;
+    }
+
+    public Student (String name, String email, Date dateOfBirth, Address address, List<String> phoneNumbers) {
+        this(name, email, dateOfBirth, address);
+        this.phoneNumbers = phoneNumbers;
     }
 
     public long getId() {
@@ -83,6 +99,26 @@ public class Student {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public void setAge(long age) {
+        this.age = age;
+    }
+
+    public List<String> getPhoneNumbers() {
+        return phoneNumbers;
+    }
+
+    public void setPhoneNumbers(List<String> phoneNumbers) {
+        this.phoneNumbers = phoneNumbers;
+    }
+
+    public Klass getKlass() {
+        return klass;
+    }
+
+    public void setKlass(Klass klass) {
+        this.klass = klass;
     }
 
     @Override
